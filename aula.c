@@ -10,6 +10,6 @@ int *inicializa(int valor, int tam){
 }
 
 int main(void){
-
+    printf("Mim de papai");
     return 0;
 }

@@ -6,7 +6,7 @@ int main(void){
     arq = fopen("teste.txt", "wt");
 
     if(arq == NULL){
-        printf("Deu erro maneh");
+        printf("Deu erro manehJH");
     }
 
     fclose(arq);
