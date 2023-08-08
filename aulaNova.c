@@ -4,18 +4,15 @@
 
 int main(void){
     FILE *arq;
-    char nome[50] = "Alexandre Mota";
-    char separador[4] = ", ";
-    float altura = 1.82;
-    arq = fopen("test.bin", "wb");
+    float vet[4];
+    arq = fopen("test.bin", "r");
 
-    if(arq == NULL){
-        printf("Erroooooo");
+    if(arq == NULL)
         exit(1);
-    }
-    fwrite(nome, sizeof(char), strlen(nome), arq);
-    fwrite(separador, sizeof(char), strlen(separador), arq);
-    fwrite(&altura, sizeof(float), 1, arq);
+    fseek(arq, 2 * sizeof(float), SEEK_SET);
+    fread(&vet[2], sizeof(float), 1, arq);
+    for(int i = 0; i < 4; i++)
+        printf("vet[%d]=%f\n", i+1, vet[i]);
     fclose(arq);
     return 0;
 }
