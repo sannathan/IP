@@ -1,26 +1,53 @@
 #include <stdio.h>
 
 typedef struct{
-    char placa[6];
+    char Placa[6];
 }Caminhao;
 
 typedef struct{
+    int codigo;
+    float loc_x, loc_y;
+    Caminhao *caminhao;
+    int n_caminhao;
+}Filial;
 
-};
-
-Caminhao remover_caminhao(Filial *filiais, int codigo_filial){
-    Caminhao removido;
-    if(filiais[codigo_filial].n_caminhao == 0){
-        printf("Nao ha caminhoes nessa filial!\n")
-    }
-}
-
+typedef struct{
+    float origem_x, origem_y;
+    float destino_x, destino_y;
+}Produto;
 
 int main(void){
-    int escolha = -1, qtdfiliais = 0;
-    FILIAL *filial = NULL;
+    int valor;
 
+    do{
+    printf("\t MENU\n");
+    printf("1: Cadastrar filial\n");
+    printf("2: Cadasrar caminhao\n");
+    printf("3: Realizar entrega\n");
+    printf("4: Imprimir filiais\n");
+    printf("5: Sair\n");
 
+    scanf("%d", &valor);
+
+    switch(valor){
+        case 1:
+            
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        case 4:
+
+            break;
+        case 5:
+            printf("Saindo...");
+            valor = 5;
+            break;
+        }
+    }while (valor != 5);
 
     return 0;
 }
