@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 
 typedef struct{
     char Placa[6];
@@ -16,13 +18,61 @@ typedef struct{
     float destino_x, destino_y;
 }Produto;
 
+Caminhao remover_caminhao(Filial *filiais, int codigo_final){
+
+}
+
+Filial *cadastrar_filial(Filial *filiais, int *n_filiais){
+    int loc_x, loc_y;
+
+    Filial *tmp = filiais; //Ponteiro temporario para caso o ponteiro principal der ruim, liberar a memória por ele
+    filiais = (Filial *)realloc(filiais, (*n_filiais + 1) * (sizeof(Filial)));
+
+    if(filiais == NULL){
+        printf("Erro ao alocar memória\n");
+        for(int i = 0; i < *n_filiais; i++){
+            free(tmp[i].caminhao);
+        }
+        free(tmp);
+        exit(1);
+    }
+
+    printf("Digite a coordenada x da sua filial:\n");
+    scanf("%d", &loc_x);
+    printf("Digite a coordenada y da sua filial:\n");
+    scanf("%d", &loc_y);
+
+    printf("Filial Cadastrada com sucesso!\n");
+    filiais->codigo = *n_filiais;
+    filiais->loc_x = loc_x;
+    filiais->loc_y = loc_y;
+    filiais->caminhao = NULL;
+    filiais->n_caminhao = 0;
+    (*n_filiais)++;
+
+    return filiais;
+}
+
+void cadastrar_caminhao(Filial *filiais, Caminhao caminhao, int codigo_filial){
+
+}
+
+void realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
+
+}
+
+void imprimir_filiais(Filial *filiais, int n_filiais){
+
+}
+
 int main(void){
-    int valor;
+    int valor, n_filiais = 0;
+    Filial *filiais = NULL;
 
     do{
     printf("\t MENU\n");
     printf("1: Cadastrar filial\n");
-    printf("2: Cadasrar caminhao\n");
+    printf("2: Cadastrar caminhao\n");
     printf("3: Realizar entrega\n");
     printf("4: Imprimir filiais\n");
     printf("5: Sair\n");
@@ -31,7 +81,7 @@ int main(void){
 
     switch(valor){
         case 1:
-            
+            filiais = cadastrar_filial(filiais, &n_filiais);
             break;
         case 2:
 
