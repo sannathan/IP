@@ -3,6 +3,8 @@
 #include <string.h>
 #include <math.h>
 
+#define max 100000000000
+
 typedef struct{
     char Placa[6];
 }Caminhao;
@@ -57,17 +59,46 @@ Filial *cadastrar_filial(Filial *filiais, int *n_filiais){
 void cadastrar_caminhao(Filial *filiais, Caminhao caminhao, int codigo_filial){
     char buffer[6];
     printf("Digite a placa do caminhao:\n");
-    scanf(" %s", buffer);
+    scanf(" %5[^\n]", buffer);
 
     strcpy(caminhao.Placa, buffer);
 
-    Filial *tmp = filiais;
+    Caminhao *tmp = filiais[codigo_filial].caminhao;
     filiais[codigo_filial].caminhao = (Caminhao *)realloc(filiais[codigo_filial].caminhao, (filiais[codigo_filial].n_caminhao + 1) * sizeof(Caminhao));
+
+    if(filiais[codigo_filial].caminhao == NULL){
+        printf("Erro ao alocar memória\n");
+        free(tmp);
+        exit(1);
+    }
+    filiais[codigo_filial].caminhao[filiais[codigo_filial].n_caminhao] = caminhao;    
     filiais[codigo_filial].n_caminhao++;
+    printf("Caminhao adicionado com sucesso!\n");
 }
 
 void realizar_entrega(Filial *filiais, Produto produto, int n_filiais){
+    float DistOrigem, DistDestino;
+    float minOrigem = max, minDestino = max;
+    int indexOrigem = 0, indexDestino = 0;
 
+    for(int i = 0; i < n_filiais; i++){
+        DistOrigem = sqrt(pow(produto.origem_x - filiais[i].loc_x, 2) + pow(produto.origem_y - filiais[i].loc_y, 2));
+
+        if(DistOrigem < minOrigem){
+            minOrigem = DistOrigem;
+            indexOrigem = i;
+        }
+
+        DistDestino = sqrt(pow(produto.destino_x -filiais[i].loc_y, 2) + pow(produto.origem_y - filiais[i].loc_y, 2));
+
+        if(DistDestino < minDestino){
+            minDestino = DistOrigem;
+            indexDestino = i;
+        }
+    }
+
+    Caminhao adicionar = remover_caminhao(filiais, indexOrigem);
+    cadastrar_caminhao(filiais, adicionar, indexDestino);
 }
 
 void imprimir_filiais(Filial *filiais, int n_filiais){
@@ -76,6 +107,7 @@ void imprimir_filiais(Filial *filiais, int n_filiais){
 
 int main(void){
     int valor, n_filiais = 0, codigo_filial = 0;
+    Produto produto;
     Filial *filiais = NULL;
     Caminhao caminhao;
 
@@ -94,12 +126,16 @@ int main(void){
             filiais = cadastrar_filial(filiais, &n_filiais);
             break;
         case 2:
-            printf("Digite o código da filial:");
+            printf("Digite o codigo da filial: ");
             scanf("%d", &codigo_filial);
             cadastrar_caminhao(filiais, caminhao, codigo_filial);
             break;
         case 3:
-
+            printf("Digite as coordenadas x e y de origem do produto:\n");
+            scanf("%d %d", produto.origem_x, produto.origem_y);
+            printf("Digite as coordenadas x e y de destino do produto:\n");
+            scanf("%d %d", produto.destino_x, produto.destino_y);
+            realizar_entrega(filiais, produto, n_filiais);
             break;
         case 4:
 
