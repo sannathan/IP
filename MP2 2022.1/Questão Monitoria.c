@@ -172,5 +172,9 @@ int main(void){
         }
     }while (valor != 5);
 
+    for(int i = 0; i < filiais[n_filiais].n_caminhao; i++){
+        free(filiais[i].caminhao);
+    }
+    free(filiais);
     return 0;
 }
