@@ -21,8 +21,12 @@ typedef struct{
     float destino_x, destino_y;
 }Produto;
 
-Caminhao remover_caminhao(Filial *filiais, int codigo_final){
-
+Caminhao remover_caminhao(Filial *filiais, int codigo_filial){
+    Caminhao remov;
+    strcpy(remov.Placa , filiais[codigo_filial].caminhao->Placa);
+    filiais[codigo_filial].caminhao = (Caminhao *)realloc(filiais[codigo_filial].caminhao, (filiais[codigo_filial].caminhao - 1) * sizeof(Caminhao));
+    filiais[codigo_filial].n_caminhao -= 1;
+    return remov;
 }
 
 Filial *cadastrar_filial(Filial *filiais, int *n_filiais){
