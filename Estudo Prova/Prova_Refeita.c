@@ -31,6 +31,7 @@ Aluno *carregaAlunos(int *qtdAlunos){
     else{
         printf("Erro ao abrir o arquivo");
     }
+    fclose(arq);
     return alunos;
 }
 
@@ -72,8 +73,29 @@ void ordena(Aluno *alunos, int qtdAlunos){
 
 }
 void salvaAlunos(Aluno *alunos, int qtdAlunos){
-    
+    FILE *arq;
+    arq = fopen("alunos.bin", "wb");
 
+    if(arq){
+        for(int i = 0; i < qtdAlunos; i++){
+            fwrite(alunos[i].nome, sizeof(alunos[i].nome), 1, arq);
+            fseek(arq, sizeof(alunos[i].nome + 1), SEEK_SET);
+            fwrite(alunos[i].CPF, sizeof(alunos[i].CPF), 1, arq);
+            fseek(arq, sizeof(alunos[i].CPF + 1), SEEK_CUR);
+            fwrite(alunos[i].qtd_notas, sizeof(alunos[i].qtd_notas), 1, arq);
+            fseek(arq, sizeof(alunos[i].qtd_notas + 1), SEEK_CUR);
+            for(int j = 0; j < alunos[i].qtd_notas; j++){
+                fwrite(alunos[i].notas[j], sizeof(alunos[i].notas[j]), 1, arq);
+                fseek(arq, sizeof(float), SEEK_CUR);
+            }
+        }
+    }
+    else{
+        printf("Erro ao abrir o arquivo\n");
+        exit(1);
+    }
+
+    fclose(arq);
 }
 
 int main(void){
@@ -89,10 +111,8 @@ int main(void){
         ordena(alunos, qtdAlunos);
     }
 
+    salvaAlunos(alunos, qtdAlunos);
 
-
-
-
-
+    free(alunos);
     return 0;
 }
