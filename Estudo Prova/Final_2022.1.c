@@ -34,14 +34,11 @@ char *pecasIndividuo(Peca *todasPecas){
     srand(time(NULL));
     if(pecasJog){
         for(int i = 0; i < 7; i++){
-            int index = rand() % 28;
+            int index;
+            do{
+                index = rand() % 28;
+            }while(todasPecas[index].emJogo != 0);
             pecasJog[i] = todasPecas[index];
-            if(todasPecas[index].emJogo == 1){
-                do{
-                    index = rand() % 28;
-                    pecasJog[i] = todasPecas[index];
-                }while(todasPecas[index].emJogo != 0);
-            }
             todasPecas[index].emJogo = 1;
         }
     }
@@ -52,7 +49,7 @@ char *pecasIndividuo(Peca *todasPecas){
     return pecasJog;
 }
 
-char *jogada(char pecaEscolhida, char extremidade, char *pecasJogador, char *tamPecasJog, Peca *todasPecas, char *Mesa, char *tamMesa){
+char *jogada(char pecaEscolhida, char extremidade, Peca *pecasJogador, char *tamPecasJog, Peca *todasPecas, char *Mesa, char *tamMesa){
 
     if(extremidade == 0){
         //Verifica se pode adicionar no começo da mesa
@@ -94,9 +91,34 @@ char *jogada(char pecaEscolhida, char extremidade, char *pecasJogador, char *tam
     return pecasJogador;
 }
 
+void mostraPecas(char *pecasJogador){
+    printf("Pecas: ");
+    for(int i = 0; pecasJogador[i] != '\0'; i+= 2){
+        printf("%c:%c ", pecasJogador[i], pecasJogador[i+1]);
+    }
+    printf("\n");
+}
+
+unsigned char pontuacao(Peca *pecaJogador, char *tamPecasJog){
+    unsigned char somatorio[7];
+    for(int i = 0; i < *tamPecasJog; i++){
+        somatorio[i] = pecaJogador[i].parte1 + pecaJogador[i].parte2;
+    }
+    return somatorio;
+}
+
+void mostraMesa(char *mesa){
+    printf("Mesa: ");
+    for(int i = 0; mesa[i] != '\0'; i += 2){
+        printf("%c:%c ", mesa[i], mesa[i+1]);
+    }
+    printf("\n");
+}
+
 int main(void){
+    int inicio = 1;
     unsigned char pecaEscolhida, tamMesa;
-    char extremidade, Mesa, pecasJogador, tamPecasJog = 7;
+    char extremidade, Mesa, tamPecasJog1 = 7, tamPecasJog2 = 7,opt = 'S';
     Peca *todasPecas = inicializaPecasDomino();
 
     Peca *jogador1 = pecasIndividuo(todasPecas);
@@ -104,37 +126,86 @@ int main(void){
 
     int escolha = 0;
 
-    printf("Qual jogador irá iniciar a partida?: 1 - 1° Primeiro jogador\n 2 - 2° Jogador\n");
-    scanf("%d", &escolha);
+    while(opt == 'S' || opt == 's'){
 
-    switch (escolha)
-    {
-    case 1:
-        for(int i = 0; i < 7; i++){
-            printf("%d°: %d | %d\n", i, jogador1[i].parte1, jogador1[i].parte2);
-        }
+    
+        do{
 
-        if(tamMesa == 0){
-            printf("Qual peça deseja jogar?");
-            scanf("%d", &pecaEscolhida);
+        if(inicio){
+            printf("Qual jogador irá iniciar a partida?: 1 - 1° Primeiro jogador\n 2 - 2° Jogador\n");
+            scanf("%d", &escolha);
+            inicio++;    
         }
         else{
-            printf("Qual peça e extremidade deseja jogar?\n1- Para o final da mesa\n0- Para o inicio da mesa\n");
-            scanf("%d %c", &pecaEscolhida, &extremidade);
+            if(escolha == 1){
+                escolha = 2;
+            }
+            else{
+                escolha = 1;
+            }
+        }
+
+        switch (escolha)
+        {
+        case 1:
+        if(tamPecasJog1 != 0){
+            for(int i = 0; i < 7; i++){
+                printf("%d°: %d | %d\n", i, jogador1[i].parte1, jogador1[i].parte2);
+            }
+
+            if(tamMesa == 0){
+                printf("Qual peça deseja jogar?");
+                scanf("%d", &pecaEscolhida);
+            }
+            else{
+                printf("Qual peça e extremidade deseja jogar?\n1- Para o final da mesa\n0- Para o inicio da mesa\n");
+                scanf("%d %c", &pecaEscolhida, &extremidade);
+            }
+            
+            jogador1 = jogada(pecaEscolhida, extremidade, jogador1, &tamPecasJog1, todasPecas, &Mesa, &tamMesa);
+            
+            mostraMesa(&Mesa);
+            break;
+        }
+        else{
+            printf("Jogador 1 foi o vencedor da partida!");
+            break;
+        }
+            
+        case 2:
+        if(tamPecasJog2 != 0){
+            for(int i = 0; i < 7; i++){
+                printf("%d°: %d | %d\n", i, jogador2[i].parte1, jogador2[i].parte2);
+            }
+
+            if(tamMesa == 0){
+                printf("Qual peça deseja jogar?");
+                scanf("%d", &pecaEscolhida);
+            }
+            else{
+                printf("Qual peça e extremidade deseja jogar?\n1- Para o final da mesa\n0- Para o inicio da mesa\n");
+                scanf("%d %c", &pecaEscolhida, &extremidade);
+            }
+                    
+            jogador2 = jogada(pecaEscolhida, extremidade, jogador2, &tamPecasJog2, todasPecas, &Mesa, &tamMesa);
+                    
+            mostraMesa(&Mesa);
+            break;
+        }
+        else{
+            printf("Jogador 2 foi o vencedor!");
+            break;
         }
         
-        jogador1 = jogada(pecaEscolhida, extremidade, &pecasJogador, &tamPecasJog, todasPecas, &Mesa, &tamMesa);
-        
+        default:
+        printf("Número inválido!");
+            break;
+        }
 
-        break;
-    
-    case 2:
+        }while(tamPecasJog1 != 0 || tamPecasJog2 != 0 || );
 
-        break;
-    default:
-        break;
+    printf("Deseja jogar novamente?:\nDigite S para sim e N para encerrar");
+    scanf("%c", &opt);
     }
-
-
     return 0;
 }
