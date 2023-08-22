@@ -17,7 +17,7 @@ typedef struct{
 }listaCandidatos;
 
 typedef struct{
-    Candidato candi;
+    Candidato *candi;
     int votos;
 }TotalVoto;
 
@@ -148,28 +148,56 @@ Eleitor *carregarEleitores(char *nomeArq, int *qtdEleitores){
 }
 
 int verificaCandidato(listaCandidatos listaC, Candidato candidatoAt){
-    if(strcmp(candidatoAt.nome, listaC.depEst))
-    candidatoAt, 
-    return;
+    for(int i = 0; i < listaC.qtdCandidatos[0]; i++){
+        if(strcmp(listaC.depFed[i].nome, candidatoAt.nome) == 0 && listaC.depFed[i].numero == candidatoAt.numero){
+            return 1;
+        }
+    }
+    for(int j = 0; j < listaC.qtdCandidatos[1]; j++){
+        if(strcmp(listaC.depEst[j].nome, candidatoAt.nome) == 0 && listaC.depEst[j].numero == candidatoAt.numero){
+            return 1;
+        }
+    }
+    for(int k = 0; k < listaC.qtdCandidatos[2]; k++){
+        if(strcmp(listaC.Senador[k].nome, candidatoAt.nome) == 0 && listaC.Senador[k].numero == candidatoAt.numero){
+            return 1;
+        }
+    }
+    for(int l = 0; l <listaC.qtdCandidatos[3]; l++){
+        if(strcmp(listaC.Governador[l].nome, candidatoAt.nome) == 0 && listaC.Senador[l].numero == candidatoAt.numero){
+            return 1;
+        }
+    }
+    for(int m = 0; m < listaC.qtdCandidatos[4]; m++){
+        if(strcmp(listaC.Presidente[m].nome, candidatoAt.nome) == 0 && listaC.Presidente[m].numero == candidatoAt.numero){
+            return 1;
+        }
+    }
+    return 0;
 }
 
-int verificaEleitor(Eleitor *listaE, Eleitor eleitorAt){
-    return;
+int verificaEleitor(Eleitor *listaE, Eleitor eleitorAt, int qtdEleitores){
+    for(int i = 0; i < qtdEleitores; i++){
+        if(strcmp(listaE[i].nome, eleitorAt.nome) == 0 && strcmp(listaE[i].cpf, eleitorAt.cpf) == 0){
+            return 1;
+        }
+    }
+    return 0;
 }
 
 void apresentaResultado(TotalVoto *votos, int qtdCandidatos){
-
-}
-
-Candidato *localizaCandidato(listaCandidatos listaC, Candidato candidatoAt, char *cargo){
-    return;
+    for(int i = 0; i < qtdCandidatos; i++){
+        printf("Candidato: %s\tNumero: %d\nQuantidade de Votos:%d\n", )
+    }
 }
 
 int main(void){
-    char ArqCandidatos[] = "candidatos.txt", ArqEleitores[] = "eleitores.txt";
-    int qtdEleitores, escolha, saida = 1;
+    char ArqCandidatos[] = "candidatos.txt", ArqEleitores[] = "eleitores.txt", CPF[12];
+    int qtdEleitores = 0, qtdCandidatos, escolha, saida = 1;
     listaCandidatos candidatos = carregarCandidatos(&ArqCandidatos);
-    Eleitor *eleitores = carregarEleitores(&ArqEleitores, &qtdEleitores);
+    Eleitor *eleitores = carregarEleitores(&ArqEleitores, &qtdEleitores), eleitorAt;
+    TotalVoto *votos;
+    Candidato escolhaCandidato;
 
     printf("\t SISTEMA ELEITORAL\n\tELEICOES 2023.1\n1- Votar\n2- Votacao Atual\n3- Sair do sistema\n");
     scanf("%d", &escolha);
@@ -177,7 +205,83 @@ int main(void){
     do{
         switch(escolha){
         case 1:
+            do{
+                printf("Digite o seu CPF:\n");
+                scanf(" %s", eleitorAt.cpf);
 
+                printf("Digite seu nome:\n");
+                scanf(" %s", eleitorAt.nome);
+
+                qtdEleitores += 1;
+                if(verificaEleitor(eleitores, eleitorAt, qtdEleitores)){
+                    TotalVoto *tmp = votos;
+                    votos = (TotalVoto *)realloc(votos, sizeof(TotalVoto) * qtdEleitores);
+
+                    if(votos){
+                        printf("Bem vindo ao sistema de votação do TRE-PE\nDIGITE O NUMERO DO SEU CANDIDATO A DEPUTADO FEDERAL:\n");
+                        scanf("%d", &escolhaCandidato.numero);
+                        printf("DIGITE O NOME DO SEU CANDIDATO A DEPUTADO FEDERAL:\n");
+                        scanf(" %100[^\n]", escolhaCandidato.nome);
+
+                        if(verificaCandidato(candidatos, escolhaCandidato)){
+                            printf("DIGITE O NUMERO DO SEU CANDIDATO A DEPUTADO ESTADUAL:\n");
+                            scanf("%d", &escolhaCandidato.numero);
+                            printf("DIGITE O NOME DO SEU CANDIDATO A DEPUTADO ESTADUAL:\n");
+                            scanf(" %100[^\n]", escolhaCandidato.nome);
+
+                            if(verificaCandidato(candidatos, escolhaCandidato)){
+                                printf("DIGITE O NUMERO DO SEU CANDIDATO A SENADOR:\n");
+                                scanf("%d", &escolhaCandidato.numero);
+                                printf("DIGITE O NOME DO SEU CANDIDATO A SENADOR\n");
+                                scanf(" %100[^\n]", escolhaCandidato.nome);
+
+                                if(verificaCandidato(candidatos, escolhaCandidato)){
+                                    printf("DIGITE O NUMERO DO SEU CANDIDATO A GOVERNADOR:\n");
+                                    scanf("%d", &escolhaCandidato.numero);
+                                    printf("DIGITE O NOME DO SEU CANDIDATO A GOVERNADOR");
+                                    scanf(" %100[^\n]", escolhaCandidato.nome);
+
+                                    if(verificaCandidato(candidatos, escolhaCandidato)){
+                                        printf("DIGITE O NUMERO DO SEU CANDIDATO A PRESIDENTE:\n");
+                                        scanf("%d", &escolhaCandidato.numero);
+                                        printf("DIGITE O NOME DO SEU CANDIDATO A PRESIDENTE:\n");
+                                        scanf(" %100[^\n]", escolhaCandidato.nome);
+
+                                        if(verificaCandidato(candidatos, escolhaCandidato)){
+
+                                        }
+                                        else{
+
+                                        }
+                                    }
+                                    else{
+
+                                    }
+                                }
+                                else{
+                                    
+                                }
+                            }
+                            else{
+
+                            }
+                        }
+                        else{
+
+                        }
+                    }
+                    else{
+                        printf("Erro ao alocar memória...");
+                        free(tmp);
+                        exit(1);
+                    }
+                    
+                }
+                else{
+                    printf("CPF invalido!\nTente novamente");
+                    qtdEleitores -= 1;
+                }
+            }while(strcmp(CPF, "-1") != 0);
             break;
         case 2:
 
@@ -189,6 +293,6 @@ int main(void){
         }
     }while(saida);
     
-
+    free(eleitores);
     return 0;
 }
