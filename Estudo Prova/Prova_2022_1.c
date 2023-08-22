@@ -48,7 +48,7 @@ listaCandidatos carregarCandidatos(char *nomeArq){
                     exit(1);
                 }
                 fscanf(registroCand, "%99[^,]", candidatos.depFed[qtdFed - 1].nome);
-                fscanf(registroCand, "%100[^\n]", &candidatos.depFed[qtdFed - 1].numero);
+                fscanf(registroCand, "%d", &candidatos.depFed[qtdFed - 1].numero);
             }
             else if(strcmp(tipo, "deputado estadual") == 0){
                 qtdEst++;
@@ -61,7 +61,7 @@ listaCandidatos carregarCandidatos(char *nomeArq){
                     exit(1);
                 }
                 fscanf(registroCand, "%99[^,]", candidatos.depEst[qtdEst - 1].nome);
-                fscanf(registroCand, "%100[^\n]", &candidatos.depEst[qtdEst - 1].numero);
+                fscanf(registroCand, "%d", &candidatos.depEst[qtdEst - 1].numero);
             }
             else if(strcmp(tipo, "senador") == 0){
                 qtdSen++;
@@ -74,7 +74,7 @@ listaCandidatos carregarCandidatos(char *nomeArq){
                     exit(1);
                 }
                 fscanf(registroCand, "%99[^,]", candidatos.Senador[qtdSen - 1].nome);
-                fscanf(registroCand, "%100[^\n]", &candidatos.Senador[qtdSen - 1].numero);
+                fscanf(registroCand, "%d", &candidatos.Senador[qtdSen - 1].numero);
             }
             else if(strcmp(tipo, "governador") == 0){
                 qtdGov++;
@@ -87,7 +87,7 @@ listaCandidatos carregarCandidatos(char *nomeArq){
                     exit(1);
                 }
                 fscanf(registroCand, "%99[^,]", candidatos.Governador[qtdGov - 1].nome);
-                fscanf(registroCand, "%100[^\n]", &candidatos.Governador[qtdGov - 1].numero);
+                fscanf(registroCand, "%d", &candidatos.Governador[qtdGov - 1].numero);
             }
             else if(strcmp(tipo, "presidente") == 0){
                 qtdPres++;
@@ -100,7 +100,7 @@ listaCandidatos carregarCandidatos(char *nomeArq){
                     exit(1);
                 }
                 fscanf(registroCand, "%99[^,]", candidatos.Presidente[qtdPres - 1].nome); //qtdPres - 1 pois é a posição do vetor. o 1° candidato vai estar na posição 0 do vetor
-                fscanf(registroCand, "%100[^\n]", &candidatos.Presidente[qtdPres].numero);
+                fscanf(registroCand, "%d", &candidatos.Presidente[qtdPres].numero);
             }
         }
     }
@@ -187,7 +187,7 @@ int verificaEleitor(Eleitor *listaE, Eleitor eleitorAt, int qtdEleitores){
 
 void apresentaResultado(TotalVoto *votos, int qtdCandidatos){
     for(int i = 0; i < qtdCandidatos; i++){
-        printf("Candidato: %s\tNumero: %d\nQuantidade de Votos:%d\n", )
+        printf("Candidato: %s\tNumero: %d\nQuantidade de Votos:%d\n", );
     }
 }
 
